@@ -95,6 +95,8 @@ def get_sparse_adj(graph: nx.Graph):
 
 
 def preprocess(root_dir="data/dataset"):
+    if not os.path.exists(root_dir):
+        os.makedirs(root_dir)
     dataset = get_dataset()
     for inst in dataset:
         torch.save(
@@ -139,6 +141,8 @@ class GraphDataset(Dataset):
 class Logger:
     def __init__(self, file_path, mode="w"):
         self.file_path = file_path
+        if not os.path.exists(os.path.dirname(file_path)):
+            os.makedirs(os.path.dirname(file_path))
         if mode == "w":
             with open(file_path, mode) as f:
                 f.write("")
@@ -175,7 +179,6 @@ if __name__ == "__main__":
 
     dataset = GraphDataset(
         transform=Hamiltonian_MaxCut,
-        init=True,
     )
     dataset = GraphDataset(
         transform=Hamiltonian_MaxIndSet,
